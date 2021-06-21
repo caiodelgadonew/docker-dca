@@ -1,0 +1,43 @@
+$ docker container ls
+$ docker image ls
+$ docker network ls
+$ docker volume ls
+
+$ docker search debian
+$ docker image pull debian
+$ docker container run -dit --name debian1 --hostname c1 debian
+
+$ docker container ls
+$ docker container attach debian1
+
+debian1$ ip -c a
+debian1$ hostname
+debian1$ cat /etc/hosts
+debian1$ exit
+
+$ docker container ls -a
+
+$ docker container start debian1
+$ docker container attach debian1
+
+# READ ESCAPE SEQUENCE -> <CTRL> + <P> + <Q>
+ 
+$ docker container ls
+
+
+$ docker container logs debian1
+$ docker container stop debian1
+$ docker container rm debian1
+$ docker container ls -a
+
+
+$ docker container run -dit --name c1 --hostname server debian
+$ docker container ls
+
+$ echo "Arquivo de teste" > /tmp/arquivo
+$ docker container cp /tmp/arquivo c1:/tmp
+
+$ docker container exec c1 ls -l /tmp
+$ docker container exec c1 cat /tmp/arquivo
+
+$ docker container rm -f c1
