@@ -1,0 +1,4 @@
+$ curl -fsSL https://get.docker.com | sudo bash
+
+$ sudo usermod -aG docker $USER
+$ sudo curl https://raw.githubusercontent.com/docker/machine/v0.16.0/contrib/completion/bash/docker-machine.bash -o /etc/bash_completion.d/docker-machine
