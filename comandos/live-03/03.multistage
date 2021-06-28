@@ -1,0 +1,51 @@
+git clone https://github.com/alexellis/href-counter.git ~/dockerfiles/multistage
+cd ~/dockerfiles/multistage
+rm Docker*
+vim Dockerfile
+
+    FROM     golang:1.7.3
+    WORKDIR  go/src/github.com/alexellis/href-counter/
+    RUN      go get -d -v golang.org/x/net/html  
+    COPY     app.go .
+    RUN      CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o app .
+    CMD      ["./app"]
+
+docker  image build -t multistage:v1 . 
+
+
+vim Dockerfile
+
+    FROM     golang:1.7.3 AS builder
+    WORKDIR  /go/src/github.com/alexellis/href-counter/
+    RUN      go get -d -v golang.org/x/net/html
+    COPY     app.go    .
+    RUN      CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o app .
+
+    FROM     alpine:latest
+    RUN      apk --no-cache add ca-certificates
+    WORKDIR  /root/
+    COPY     --from=builder /go/src/github.com/alexellis/href-counter/app .
+    CMD      ["./app"]
+
+docker  image build -t multistage:v2 . 
+
+docker image ls | egrep "REPOSITORY|multistage"
+
+
+docker container run --rm -it -e url=https://youtube.com/caiodelgadonew multistage:v1
+docker container run --rm -it -e url=https://youtube.com/caiodelgadonew multistage:v2
+
+mkdir -p ~/dockerfiles/multistage2
+cd ~/dockerfiles/multistage2
+vim Dockerfile
+
+    FROM     alpine:latest
+    WORKDIR  /root/
+    COPY     --from=dicas:v7 /samples/1.txt .
+    CMD      ["cat", "1.txt"]
+
+docker image build -t multistage:v3 .
+
+docker container run --rm -it multistage:v3
+
+docker image pune -a

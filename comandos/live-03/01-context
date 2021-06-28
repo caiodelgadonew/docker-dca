@@ -1,0 +1,31 @@
+mkdir -p ~/dockerfiles/exemplo1
+cd ~/dockerfiles/exemplo1
+echo "Dockerfile Melhores Práticas" > conteudo.txt
+
+vim Dockerfile
+
+
+FROM  busybox
+COPY  conteudo.txt /
+RUN   cat /conteudo.txt
+
+docker image build -t exemplo:v1 . 
+
+mkdir -p image context
+mv Dockerfile image
+mv conteudo.txt context
+docker image build --no-cache -t exemplo:v2 -f image/Dockerfile context
+
+
+docker image ls 
+
+sudo cp -r /var/log/ ~/dockerfiles/exemplo1/context/
+sudo chown -R vagrant:vagrant ~/dockerfiles/exemplo1/context/log
+docker image build --no-cache -t exemplo:v3 -f image/Dockerfile context
+
+vim context/.dockerignore
+
+    # Comentario: Ignorando arquivos do diretorio log
+    log
+
+docker image build --no-cache -t exemplo:v4 -f image/Dockerfile context
