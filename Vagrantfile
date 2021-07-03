@@ -19,10 +19,10 @@ Vagrant.configure("2") do |config|
         vb.name = "#{name}"
         vb.memory = conf["memory"]
         vb.cpus = conf["cpu"]
-        vb.customize ["modifyvm", :id, "--groups", "/Docker-DCA"]
+        #vb.customize ["modifyvm", :id, "--groups", "/Docker-DCA"]
         
         # Adicionado configuração de video para 128MB 
-        #vb.customize ["modifyvm", :id, "--groups", "/Docker-DCA", "--vram", "128"]
+        vb.customize ["modifyvm", :id, "--groups", "/Docker-DCA", "--vram", "128"]
       end
       machine.vm.provision "shell", path: "provision.sh"
     end
