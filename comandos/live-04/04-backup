@@ -1,0 +1,21 @@
+docker container run -dit -v /webdata --name webserver debian
+docker container cp ~/dockerfiles webserver:/webdata
+docker container exec webserver ls -lR /webdata
+docker container exec webserver df -Th
+docker volume ls
+
+docker container run -dit --volumes-from webserver --name volumetest debian
+docker container exec volumetest df -Th
+docker container exec volumetest ls -lR /webdata
+docker container inspect webserver --format '{{json .Mounts }}' | jq
+docker container inspect volumetest --format '{{json .Mounts }}' | jq
+docker container rm -f volumetest
+
+mkdir ~/backup
+cd ~/backup
+docker container run --rm --volumes-from webserver -v $(pwd):/backup alpine tar cvf /backup/backup.tar /webdata
+tar -tvf backup.tar
+
+
+docker container rm -f $(docker container ls -aq)
+docker volume rm -f $(docker volume ls -q)

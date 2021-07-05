@@ -1,0 +1,37 @@
+docker container run -dit --name servidor -v /srv:/srv debian
+docker container exec servidor df -Th
+
+docker container exec servidor ls -lR /srv
+sudo cp -r ~/dockerfiles /srv
+docker container exec servidor ls -lR /srv
+
+docker container rm -f servidor
+docker container run -dit --name servidor -v /volume debian
+
+docker container inspect servidor | grep volume
+
+docker volume ls
+docker volume inspect <hash>
+
+docker container exec servidor df -Th
+docker container exec servidor ls -lR /volume
+
+sudo cp -r ~/dockerfiles /var/lib/docker/volumes/<hash>/_data
+docker container exec servidor ls -lR /volume
+
+docker container rm -f servidor
+docker container run -dit --name servidor -v volume:/volume debian
+docker volume ls
+
+docker container run -dit --name servidor2 --mount source=volume2,target=/volume2  debian
+
+docker container inspect servidor --format '{{json .Mounts }}' 
+docker container inspect servidor2 -f '{{json .Mounts }}'
+
+sudo apt-get update && sudo apt-get install jq -y
+docker container inspect servidor --format '{{json .Mounts }}' | jq 
+docker container inspect servidor2 -f '{{json .Mounts }}' | jq
+
+docker volume ls
+docker volume rm <hash>
+docker volume rm $(docker volume ls -q)
