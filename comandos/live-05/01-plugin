@@ -1,0 +1,72 @@
+----- NODE 01 / NODE 02
+docker plugin install vieux/sshfs
+
+docker plugin ls
+
+
+
+----- NODE02
+$ vagrant ssh node02
+$ sudo yum install vim -y
+$ sudo vim /etc/ssh/sshd_config
+
+
+                    PasswordAuthentication yes
+$ sudo systemctl restart sshd
+
+$ docker volume create -d vieux/sshfs --name sshvolume -o sshcmd=vagrant@10.20.20.120:/vagrant -o password=vagrant
+$ docker volume ls
+$ docker volume inspect sshvolume | jq
+
+
+$ docker container run --rm -v sshvolume:/data alpine ls /data
+
+
+----- MASTER
+$ vagrant ssh master
+$ sudo apt-get update
+$ sudo apt-get install nfs-server -y
+$ mkdir -p /home/vagrant/storage
+$ echo "/home/vagrant/storage/ 10.20.20.0/24(rw)" | sudo tee -a /etc/exports
+$ echo "<h1> Volume NFS master.docker-dca.example</h1>" | tee  /home/vagrant/storage/index.html
+$ sudo systemctl restart nfs-server
+$ showmount -e
+
+
+----- NODE01 
+$ vagrant ssh node01
+$ sudo apt-get install nfs-common -y
+$ sudo showmount -e master.docker-dca.example
+
+----- NODE02 
+$ vagrant ssh node02
+$ sudo yum install nfs-utils -y
+$ sudo showmount -e master.docker-dca.example
+
+----- NODE01 / NODE02
+
+$ docker plugin install trajano/nfs-volume-plugin --grant-all-permissions
+
+---- NODE01 
+
+$ docker volume create -d trajano/nfs-volume-plugin \
+--opt device=master.docker-dca.example:/home/vagrant/storage \
+--opt  nfsopts=hard,proto=tcp,nfsvers=3,intr,nolock volume_nfs
+
+$ docker volume inspect volume_nfs | jq
+
+
+---- NODE01 / NODE02 
+$ docker container run -dit --name webserver -v volume_nfs:/usr/share/nginx/html/ -p 80:80 nginx
+$ docker volume inspect volume_nfs | jq
+
+$ watch curl -s localhost
+
+---- MASTER 
+
+$ echo "<h2> Novo conteudo para o volume compartilhado</h2>" | tee -a /home/vagrant/storage/index.html
+$ echo "<marquee> Se inscreva no canal https://youtube.com/caiodelgadonew</marquee>" | tee -a /home/vagrant/storage/index.html
+
+---- NODE01 / NODE02 
+
+$ docker container rm -f webserver
