@@ -1,0 +1,5 @@
+$ docker container run -dit --name webserver --network host  webserver
+
+$ sudo ss -ntpl | grep 80
+
+$ docker container rm -f webserver

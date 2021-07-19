@@ -1,0 +1,25 @@
+$ docker container run -dit --name container1 -h servidor debian
+$ docker container run -dit --name container2 -h cliente debian
+
+
+$ docker container exec container1 ip -c a show eth0
+$ docker container exec container2 ip -c a show eth0
+
+$ docker container exec container1 ping -c4 172.17.0.3
+$ docker container exec container2 ping -c4 172.17.0.2
+
+$ docker container exec container1 ping -c4 cliente
+$ docker container exec container1 ping -c4 servidor
+
+$ docker network ls 
+
+
+$ docker container rm -f container1 container2
+
+$ docker container run -dit --name container1 -h servidor debian
+$ docker container run -dit --name container2 --link container1:servidor -h cliente debian
+$ docker container exec container2 ping -c4 container1
+
+$ docker container rm -f container1 container2
+
+
