@@ -16,3 +16,5 @@ echo '10.20.20.100 master.docker-dca.example' >> /etc/hosts
 echo '10.20.20.110 node01.docker-dca.example' >> /etc/hosts
 echo '10.20.20.120 node02.docker-dca.example'>> /etc/hosts
 echo '10.20.20.200 registry.docker-dca.example' >> /etc/hosts
+
+curl -fsSL https://get.docker.com | bash
