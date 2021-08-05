@@ -1,1 +1,0 @@
-$ docker container run --rm -it hello-world

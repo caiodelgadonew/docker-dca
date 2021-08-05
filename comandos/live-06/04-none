@@ -1,5 +1,0 @@
-$ docker container run -dit --name sem-rede --network none  alpine ash
-$ docker container exec sem-rede ip link show 
-$ docker container exec sem-rede ip route 
-
-$ docker container rm -f sem-rede

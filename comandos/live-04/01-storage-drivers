@@ -1,5 +1,0 @@
-docker system info | grep Storage
-
-{
-    "storage-driver": "overlay2"
-}

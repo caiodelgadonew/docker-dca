@@ -1,5 +1,0 @@
-$ docker container run -dit --name webserver -p 80:80 webserver
-
-http://node01.docker-dca.example
-
-$ docker container rm -f webserver

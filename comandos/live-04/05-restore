@@ -1,6 +1,0 @@
-docker container run -dit -v /webdata --name webserver2 debian
-docker container exec webserver2 ls -lR /webdata
-
-docker container run --rm --volumes-from webserver2 -v $(pwd):/backup alpine ash -c "cd /webdata && tar xvf /backup/backup.tar --strip 1"
-
-docker container exec webserver2 ls -lR /webdata

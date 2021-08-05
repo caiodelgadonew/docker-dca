@@ -1,6 +1,9 @@
 # Curso Docker DCA 
-**Curso 100% Gratuito!**  
+**Curso 100% Gratuito!**
 
+Material do Curso  
+
+[![caiodelgadonew/docker](https://img.shields.io/github/stars/caiodelgadonew/docker?label=caiodelgadonew%2Fdocker&logo=github&style=for-the-badge)](https://github.com/caiodelgadonew/docker)
 
 Redes Sociais
 
