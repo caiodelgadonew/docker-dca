@@ -4,7 +4,7 @@
 machines = {
   "master"   => {"memory" => "2048", "cpu" => "2", "ip" => "100", "image" => "ubuntu/bionic64"},
   "node01"   => {"memory" => "1024", "cpu" => "2", "ip" => "110", "image" => "ubuntu/bionic64"},
-  "node02"   => {"memory" => "1024", "cpu" => "2", "ip" => "120", "image" => "centos/7"},
+  "node02"   => {"memory" => "1024", "cpu" => "2", "ip" => "120", "image" => "almalinux/9"},
   "registry" => {"memory" => "2048", "cpu" => "2", "ip" => "200", "image" => "ubuntu/bionic64"}
 }
 
